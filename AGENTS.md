@@ -21,7 +21,7 @@ npm run dev               # http://localhost:3000
 ```
 Host: localhost:5432  |  DB: inventario_db  |  User: admin  |  Pass: Abcd1234
 ```
-`.env` is committed (not gitignored). DB must be running for dev.
+`.env` ahora está en `.gitignore` (dejó de versionarse). DB debe estar corriendo para dev.
 
 ## Comandos
 | Comando | Notas |
@@ -32,6 +32,8 @@ Host: localhost:5432  |  DB: inventario_db  |  User: admin  |  Pass: Abcd1234
 | `npm run db:seed` | Runs `npx tsx prisma/seed.ts` |
 | `npx prisma generate` | Regenerate client after schema changes |
 | `npx prisma migrate dev` | Create/apply migrations |
+| `docker compose up -d --build` | Build & start production containers |
+| `docker compose exec app npx tsx prisma/seed.ts` | Seed DB inside container |
 
 ## Gotchas (agente, pon atención)
 1. **Radix UI Select** no acepta `value=""` — crashea. Usar `value="all"` y mapear a `""` en `onValueChange`.
