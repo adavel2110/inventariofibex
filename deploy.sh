@@ -10,27 +10,25 @@ echo "  Despliegue InventarioFIBEX (Podman)"
 echo "  Puerto: 3002"
 echo "========================================="
 
-# Verificar que podman-compose esté disponible
-if ! command -v podman-compose &> /dev/null; then
-    echo "Instalando podman-compose..."
-    pip3 install podman-compose
-fi
+echo ""
+echo "[1/5] Deteniendo servicios existentes..."
+podman-compose down 2>/dev/null || true
 
 echo ""
-echo "[1/4] Construyendo imagenes..."
-podman-compose build --no-cache
+echo "[2/5] Construyendo imagenes..."
+podman-compose build
 
 echo ""
-echo "[2/4] Deteniendo servicios existentes..."
-podman-compose down
-
-echo ""
-echo "[3/4] Iniciando servicios..."
+echo "[3/5] Iniciando servicios..."
 podman-compose up -d
 
 echo ""
-echo "[4/4] Verificando estado..."
-sleep 5
+echo "[4/5] Esperando a que DB este lista..."
+sleep 10
+./wait-for-db.sh && echo "DB lista." || echo "Esperando..."
+
+echo ""
+echo "[5/5] Verificando estado..."
 podman-compose ps
 
 echo ""
@@ -39,6 +37,9 @@ echo "  Despliegue completado!"
 echo ""
 echo "  URL: http://10.10.30.53:3002"
 echo "  Login: admin@fibex.com / admin123"
+echo ""
+echo "  Para importar datos:"
+echo "  DB_PORT=5434 EXCEL_PATH=/srv/inventariofibex/Inventario_Unificado_Fibex.xlsx python3 database/migrations/importar_excel.py"
 echo ""
 echo "  Comandos utiles:"
 echo "  - Ver logs:     podman-compose logs -f"

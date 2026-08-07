@@ -8,15 +8,16 @@ import openpyxl
 import psycopg2
 import uuid
 import re
+import os
 from datetime import datetime
 
-EXCEL_PATH = '/home/adavel/inventariofibex/Inventario_Unificado_Fibex.xlsx'
+EXCEL_PATH = os.environ.get('EXCEL_PATH', '/home/adavel/inventariofibex/Inventario_Unificado_Fibex.xlsx')
 DB_CONFIG = {
-    'host': 'localhost',
-    'port': 5434,
-    'database': 'inventariofibex',
-    'user': 'admin',
-    'password': 'Abcd1234'
+    'host': os.environ.get('DB_HOST', 'localhost'),
+    'port': int(os.environ.get('DB_PORT', '5432')),
+    'database': os.environ.get('DB_NAME', 'inventariofibex'),
+    'user': os.environ.get('DB_USER', 'admin'),
+    'password': os.environ.get('DB_PASSWORD', 'Abcd1234')
 }
 
 def clean_text(val):

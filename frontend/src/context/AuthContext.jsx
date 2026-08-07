@@ -25,11 +25,12 @@ export function AuthProvider({ children }) {
 
   const login = async (email, password) => {
     const res = await api.post('/auth/login', { email, password })
-    const { token, user } = res.data
+    const { token } = res.data
     localStorage.setItem('token', token)
     api.defaults.headers.common['Authorization'] = `Bearer ${token}`
-    setUser(user)
-    return user
+    const profileRes = await api.get('/auth/profile')
+    setUser(profileRes.data)
+    return profileRes.data
   }
 
   const logout = () => {

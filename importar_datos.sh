@@ -27,7 +27,7 @@ python3 -c "import psycopg2" 2>/dev/null || {
 
 echo ""
 echo "[3/3] Importando datos del Excel..."
-python3 /srv/inventariofibex/database/migrations/importar_excel.py
+cd /srv/inventariofibex && DB_PORT=5434 EXCEL_PATH=/srv/inventariofibex/Inventario_Unificado_Fibex.xlsx python3 database/migrations/importar_excel.py
 
 echo ""
 echo "========================================="
